@@ -3,7 +3,7 @@ package health
 import (
 	"net/http"
 
-	"github.com/juanMaAV92/go-server-template/internal/services/health"
+	"github.com/juanMaAV92/zenith-financial/internal/services/health"
 	"github.com/labstack/echo/v4"
 )
 

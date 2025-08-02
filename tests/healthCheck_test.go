@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/juanMaAV92/go-server-template/cmd/handlers/health"
-	healthService "github.com/juanMaAV92/go-server-template/internal/services/health"
-	"github.com/juanMaAV92/go-server-template/tests/helpers"
+	"github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
+	healthService "github.com/juanMaAV92/zenith-financial/internal/services/health"
+	"github.com/juanMaAV92/zenith-financial/tests/helpers"
 	"github.com/juanMaAV92/go-utils/pointers"
 	"github.com/juanMaAV92/go-utils/testhelpers"
 	"github.com/stretchr/testify/assert"

@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	healthHandler "github.com/juanMaAV92/go-server-template/cmd/handlers/health"
-	"github.com/juanMaAV92/go-server-template/internal/services/health"
-	"github.com/juanMaAV92/go-server-template/platform/config"
+	healthHandler "github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
+	"github.com/juanMaAV92/zenith-financial/internal/services/health"
+	"github.com/juanMaAV92/zenith-financial/platform/config"
 	"github.com/juanMaAV92/go-utils/env"
 	"github.com/juanMaAV92/go-utils/errors"
 	"github.com/juanMaAV92/go-utils/log"

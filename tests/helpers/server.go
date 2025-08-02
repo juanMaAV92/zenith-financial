@@ -1,8 +1,8 @@
 package helpers
 
 import (
-	"github.com/juanMaAV92/go-server-template/cmd"
-	"github.com/juanMaAV92/go-server-template/platform/config"
+	"github.com/juanMaAV92/zenith-financial/cmd"
+	"github.com/juanMaAV92/zenith-financial/platform/config"
 )
 
 func NewTestServer() *cmd.Instance {

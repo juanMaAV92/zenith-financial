@@ -1,9 +1,9 @@
-module github.com/juanMaAV92/go-server-template
+module github.com/juanMaAV92/zenith-financial
 
 go 1.24
 
 require (
-	github.com/juanMaAV92/go-utils v0.1.5
+	github.com/juanMaAV92/go-utils v0.2.1
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.10.0

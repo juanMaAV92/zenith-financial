@@ -1,6 +1,6 @@
 package main
 
-import "github.com/juanMaAV92/go-server-template/cmd"
+import "github.com/juanMaAV92/zenith-financial/cmd"
 
 func main() {
 	cmd.Start()

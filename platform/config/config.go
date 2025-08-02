@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	MicroserviceName = "go-server-template"
+	MicroserviceName = "zenith-financial"
 	ServiceVersion   = "1.0.0"
 )
 
