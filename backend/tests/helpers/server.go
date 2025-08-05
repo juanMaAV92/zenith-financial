@@ -1,8 +1,8 @@
 package helpers
 
 import (
-	"github.com/juanMaAV92/zenith-financial/cmd"
-	"github.com/juanMaAV92/zenith-financial/platform/config"
+	"github.com/juanMaAV92/zenith-financial/backend/cmd"
+	"github.com/juanMaAV92/zenith-financial/backend/platform/config"
 )
 
 func NewTestServer() *cmd.Instance {

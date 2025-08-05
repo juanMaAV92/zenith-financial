@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
-	healthService "github.com/juanMaAV92/zenith-financial/internal/services/health"
-	"github.com/juanMaAV92/zenith-financial/tests/helpers"
 	"github.com/juanMaAV92/go-utils/pointers"
 	"github.com/juanMaAV92/go-utils/testhelpers"
+	"github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/health"
+	healthService "github.com/juanMaAV92/zenith-financial/backend/internal/services/health"
+	"github.com/juanMaAV92/zenith-financial/backend/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
