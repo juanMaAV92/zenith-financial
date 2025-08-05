@@ -4,10 +4,10 @@ import (
 	"context"
 	"os"
 
-	"github.com/juanMaAV92/zenith-financial/platform/config"
 	"github.com/juanMaAV92/go-utils/env"
 	"github.com/juanMaAV92/go-utils/log"
 	"github.com/juanMaAV92/go-utils/tracing"
+	"github.com/juanMaAV92/zenith-financial/backend/platform/config"
 )
 
 const (

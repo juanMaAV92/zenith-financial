@@ -6,9 +6,9 @@ import (
 	"github.com/juanMaAV92/go-utils/errors"
 	"github.com/juanMaAV92/go-utils/log"
 	"github.com/juanMaAV92/go-utils/platform/server"
-	healthHandler "github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
-	"github.com/juanMaAV92/zenith-financial/internal/services/health"
-	"github.com/juanMaAV92/zenith-financial/platform/config"
+	healthHandler "github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/health"
+	"github.com/juanMaAV92/zenith-financial/backend/internal/services/health"
+	"github.com/juanMaAV92/zenith-financial/backend/platform/config"
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
 )

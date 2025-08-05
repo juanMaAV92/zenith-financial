@@ -1,4 +1,4 @@
-module github.com/juanMaAV92/zenith-financial
+module github.com/juanMaAV92/zenith-financial/backend
 
 go 1.24
 
@@ -7,6 +7,7 @@ require (
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.10.0
+	gorm.io/gorm v1.30.1
 )
 
 require (
@@ -59,5 +60,4 @@ require (
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/postgres v1.6.0 // indirect
-	gorm.io/gorm v1.30.1 // indirect
 )

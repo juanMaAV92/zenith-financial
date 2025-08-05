@@ -2,7 +2,7 @@ package cmd
 
 import (
 	utilsMiddleware "github.com/juanMaAV92/go-utils/middleware"
-	"github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
+	"github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/health"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
