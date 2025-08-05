@@ -1,13 +1,14 @@
 package cmd
 
 import (
-	healthHandler "github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
-	"github.com/juanMaAV92/zenith-financial/internal/services/health"
-	"github.com/juanMaAV92/zenith-financial/platform/config"
+	"github.com/juanMaAV92/go-utils/database"
 	"github.com/juanMaAV92/go-utils/env"
 	"github.com/juanMaAV92/go-utils/errors"
 	"github.com/juanMaAV92/go-utils/log"
 	"github.com/juanMaAV92/go-utils/platform/server"
+	healthHandler "github.com/juanMaAV92/zenith-financial/cmd/handlers/health"
+	"github.com/juanMaAV92/zenith-financial/internal/services/health"
+	"github.com/juanMaAV92/zenith-financial/platform/config"
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
 )
@@ -40,6 +41,11 @@ func NewServer(cfg *config.Config, logger log.Logger) (*Instance, error) {
 
 func (inst Instance) initServices() (*services, error) {
 	healthService := health.NewService()
+
+	_, err := database.New(inst.config.Database, inst.Logger)
+	if err != nil {
+		return nil, err
+	}
 
 	return &services{
 		healthService: healthService,
