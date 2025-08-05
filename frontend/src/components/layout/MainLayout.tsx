@@ -84,6 +84,17 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </div>
         <nav className="flex flex-1 flex-col gap-y-1 px-6 py-4">
           <NavigationItems />
+          
+          {/* Auth Section */}
+          <div className="mt-auto pt-4 border-t">
+            <Link
+              href="/login"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            >
+              <Settings className="h-4 w-4" />
+              Iniciar Sesión
+            </Link>
+          </div>
         </nav>
       </aside>
 
@@ -106,6 +117,17 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </div>
             <nav className="flex flex-1 flex-col gap-y-1 px-6 py-4">
               <NavigationItems />
+              
+              {/* Auth Section */}
+              <div className="mt-auto pt-4 border-t">
+                <Link
+                  href="/login"
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                >
+                  <Settings className="h-4 w-4" />
+                  Iniciar Sesión
+                </Link>
+              </div>
             </nav>
           </SheetContent>
         </Sheet>
