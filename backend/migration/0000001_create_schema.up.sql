@@ -3,12 +3,11 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- Para gen_random_uuid()
 CREATE TABLE "Users" (
     "id" BIGSERIAL NOT NULL PRIMARY KEY,
     "code" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "email" VARCHAR(63) NOT NULL UNIQUE,
+    "username" VARCHAR(63) NOT NULL UNIQUE,
+    "email" VARCHAR(255) NOT NULL UNIQUE,
     "password_hash" VARCHAR(255) NOT NULL,
     "password_salt" VARCHAR(32) NOT NULL,
     "currency" VARCHAR(3) NOT NULL DEFAULT 'USD',
-    "timezone" VARCHAR(63) NOT NULL DEFAULT 'UTC',
-    "last_login_at" TIMESTAMP WITH TIME ZONE,
     "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (now()),
     "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT (now())
 );
