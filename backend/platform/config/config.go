@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/juanMaAV92/go-utils/database"
 	"github.com/juanMaAV92/go-utils/env"
+	jwtUtils "github.com/juanMaAV92/go-utils/jwt"
 	platform "github.com/juanMaAV92/go-utils/platform/config"
 	"gorm.io/gorm/logger"
 )
@@ -22,10 +24,10 @@ var localConfig = Config{
 		Environment:  "local",
 		ServerName:   MicroserviceName,
 	},
-	Telemetry: platform.TelemetryConfig{
+	Telemetry: &platform.TelemetryConfig{
 		OTLPEndpoint: "localhost:4318",
 	},
-	Database: database.DBConfig{
+	Database: &database.DBConfig{
 		Host:        "localhost",
 		Password:    "postgres",
 		User:        "postgres",
@@ -35,15 +37,23 @@ var localConfig = Config{
 		MaxPoolSize: 15,
 		MaxLifeTime: 5 * time.Minute,
 	},
+	Jwt: &jwtUtils.JwtConfig{
+		SecretKey:       "secret",
+		AccessTokenTTL:  15 * time.Minute,
+		RefreshTokenTTL: 24 * time.Hour,
+		Issuer:          MicroserviceName,
+		SigningMethod:   jwt.SigningMethodHS256,
+	},
 }
 
 func deployConfig() Config {
 	return Config{
 		BasicConfig: platform.GetBasicServerConfig(MicroserviceName),
-		Telemetry: platform.TelemetryConfig{
+		Telemetry: &platform.TelemetryConfig{
 			OTLPEndpoint: env.GetEnv(env.OTLP_ENDPOINT),
 		},
-		Database: *database.GetDBConfig(),
+		Database: database.GetDBConfig(),
+		Jwt:      jwtUtils.GetJWTConfig(MicroserviceName, jwt.SigningMethodHS256),
 	}
 }
 

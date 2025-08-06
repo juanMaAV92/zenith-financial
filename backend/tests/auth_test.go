@@ -10,6 +10,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/juanMaAV92/go-utils/errors"
+	jwtUtils "github.com/juanMaAV92/go-utils/jwt"
 	"github.com/juanMaAV92/go-utils/testhelpers"
 	"github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/auth"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/domain/response"
@@ -17,7 +18,6 @@ import (
 	"github.com/juanMaAV92/zenith-financial/backend/internal/repositories"
 	authService "github.com/juanMaAV92/zenith-financial/backend/internal/services/auth"
 	"github.com/juanMaAV92/zenith-financial/backend/tests/helpers"
-	jwtUtils "github.com/juanMaAV92/zenith-financial/backend/utils/jwt"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -117,7 +117,14 @@ func Test_login(t *testing.T) {
 	}
 
 	app := helpers.NewTestServer()
-	jwtUtils.InitJWTConfig("test_secret", "zenith-financial", 15*time.Minute, 24*time.Hour, jwt.SigningMethodHS256)
+	jwtConfig := jwtUtils.JwtConfig{
+		SecretKey:       "test_secret",
+		Issuer:          "zenith-financial",
+		AccessTokenTTL:  15 * time.Minute,
+		RefreshTokenTTL: 24 * time.Hour,
+		SigningMethod:   jwt.SigningMethodHS256,
+	}
+	jwtUtils.InitJWTConfig(&jwtConfig)
 
 	for _, test := range cases {
 		t.Run(test.TestName, func(t *testing.T) {
