@@ -50,6 +50,16 @@ export interface RegisterSuccessResponse {
   created_at: string;
 }
 
+export interface LoginSuccessResponse {
+  code: string;
+  user_name: string;
+  email: string;
+  currency: string;
+  created_at: string;
+  access_token: string;
+  refresh_token: string;
+}
+
 export interface APIErrorResponse {
   code: string;
   messages: string[];
