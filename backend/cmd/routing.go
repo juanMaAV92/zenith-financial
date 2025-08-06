@@ -2,6 +2,7 @@ package cmd
 
 import (
 	utilsMiddleware "github.com/juanMaAV92/go-utils/middleware"
+	"github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/auth"
 	"github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/health"
 	"github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/users"
 	"github.com/labstack/echo/v4"
@@ -12,7 +13,7 @@ const (
 	apiV1Group      = "/v1"
 	healthCheckPath = "/health-check"
 	userPath        = "/users"
-	loginPath       = "/users/login"
+	loginPath       = "/login"
 	registerPath    = "/users/register"
 )
 
@@ -22,12 +23,16 @@ type HealthHandler interface {
 
 type UserHandler interface {
 	CreateUser(ctx echo.Context) error
-	ValidateCredentials(ctx echo.Context) error
+}
+
+type AuthHandler interface {
+	Login(ctx echo.Context) error
 }
 
 type handlers struct {
 	health HealthHandler
 	user   UserHandler
+	auth   AuthHandler
 }
 
 func configRoutes(inst *Instance, services *services) {
@@ -45,16 +50,18 @@ func configRoutes(inst *Instance, services *services) {
 func initializeHandlers(services *services) *handlers {
 	healthHandler := health.NewHandler(services.healthService)
 	UserHandler := users.NewHandler(services.userService)
+	authHandler := auth.NewHandler(services.authService)
 
 	return &handlers{
 		health: healthHandler,
 		user:   UserHandler,
+		auth:   authHandler,
 	}
 }
 
 func configureV1Routes(v1 *echo.Group, h *handlers) {
 	v1.POST(registerPath, h.user.CreateUser)
-	v1.POST(loginPath, h.user.ValidateCredentials)
+	v1.POST(loginPath, h.auth.Login)
 }
 
 func configMiddleware(inst *Instance) {

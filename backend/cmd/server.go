@@ -6,9 +6,11 @@ import (
 	"github.com/juanMaAV92/go-utils/errors"
 	"github.com/juanMaAV92/go-utils/log"
 	"github.com/juanMaAV92/go-utils/platform/server"
+	authHandler "github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/auth"
 	healthHandler "github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/health"
 	userHandler "github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/users"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/repositories"
+	"github.com/juanMaAV92/zenith-financial/backend/internal/services/auth"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/services/health"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/services/users"
 	"github.com/juanMaAV92/zenith-financial/backend/platform/config"
@@ -25,6 +27,7 @@ type Instance struct {
 type services struct {
 	healthService healthHandler.Service
 	userService   userHandler.UserService
+	authService   authHandler.AuthService
 }
 
 func NewServer(cfg *config.Config, logger log.Logger) (*Instance, error) {
@@ -53,9 +56,11 @@ func (inst Instance) initServices() (*services, error) {
 
 	userRepository := repositories.NewUserRepository(db)
 	userService := users.NewService(userRepository)
+	authService := auth.NewService(userRepository)
 
 	return &services{
 		healthService: healthService,
 		userService:   userService,
+		authService:   authService,
 	}, nil
 }

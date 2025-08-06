@@ -63,18 +63,3 @@ func (s *service) CreateUser(ctx context.Context, req *request.CreateUser) (*res
 
 	return response.ToUserResponse(newUser), nil
 }
-
-func (s *service) ValidateCredentials(ctx context.Context, req *request.ValidateUserCredentials) (*response.User, error) {
-	var userFound *entities.User
-	userFound, err := s.userRepository.GetByEmail(ctx, req.Email)
-	if userFound == nil || err != nil {
-		return nil, errors.New(http.StatusNotFound, errors.StatusNotFoundCode, []string{"User not found"})
-	}
-
-	isValidPassword := crypto.ValidatePassword(req.Password, userFound.PasswordSalt, userFound.PasswordHash)
-	if !isValidPassword {
-		return nil, errors.New(http.StatusUnauthorized, errors.StatusUnauthorizedCode, []string{"Invalid email or password"})
-	}
-
-	return response.ToUserResponse(userFound), nil
-}

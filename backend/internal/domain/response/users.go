@@ -15,6 +15,12 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type UserLogin struct {
+	*User
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
 func ToUserResponse(user *entities.User) *User {
 	return &User{
 		Code:      user.Code,
