@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-import { LoginFormData, loginSchema } from '@/types/auth';
+import { LoginFormData, loginSchema, LoginSuccessResponse, APIErrorResponse } from '@/types/auth';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,7 +23,6 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
@@ -30,28 +31,47 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
       
-      // Simular llamada a API
-      console.log('Login data:', data);
+      // Paso 1: Llamada al backend de Go para autenticación
+      const apiUrl = '/api/backend';
       
-      // Simular delay de red
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Simular validación (para demo)
-      if (data.email === 'demo@zenith.com' && data.password === 'password123') {
-        // Éxito - redirigir al dashboard
-        router.push('/dashboard');
-      } else {
-        // Error de credenciales
-        setError('root', {
-          type: 'manual',
-          message: 'Credenciales incorrectas. Intenta con demo@zenith.com / password123'
-        });
-      }
-    } catch (error) {
-      setError('root', {
-        type: 'manual',
-        message: 'Error al iniciar sesión. Inténtalo de nuevo.'
+      const loginResponse = await axios.post<LoginSuccessResponse>(
+        `${apiUrl}/v1/login`,
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // Paso 2: Enviar tokens a la API Route de Next.js para almacenamiento seguro
+      await axios.post('/api/auth/login', {
+        access_token: loginResponse.data.access_token,
+        refresh_token: loginResponse.data.refresh_token,
       });
+
+      // Paso 3: Mostrar notificación de éxito
+      toast.success(`¡Bienvenido de vuelta, ${loginResponse.data.user_name}!`);
+      
+      // Paso 4: Redirigir al dashboard
+      router.push('/dashboard');
+      
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        // Error de la API del backend
+        const errorData = error.response.data as APIErrorResponse;
+        if (errorData.messages && errorData.messages.length > 0) {
+          toast.error(errorData.messages[0]);
+        } else {
+          toast.error('Credenciales incorrectas. Verifica tu email y contraseña.');
+        }
+      } else {
+        // Error de red u otro tipo
+        toast.error('Error de conexión. Verifica tu conexión a internet.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -117,19 +137,12 @@ export default function LoginPage() {
             )}
           </div>
 
-          {/* Global Error */}
+          {/* Global Error - solo para errores de validación del formulario */}
           {errors.root && (
             <div className="p-3 rounded-md bg-red-50 border border-red-200">
               <p className="text-sm text-red-600">{errors.root.message}</p>
             </div>
           )}
-
-          {/* Demo Credentials Info */}
-          <div className="p-3 rounded-md bg-blue-50 border border-blue-200">
-            <p className="text-xs text-blue-600">
-              <strong>Demo:</strong> demo@zenith.com / password123
-            </p>
-          </div>
 
           {/* Submit Button */}
           <Button 
