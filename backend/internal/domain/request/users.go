@@ -7,7 +7,7 @@ type CreateUser struct {
 	Currency string `json:"currency"`
 }
 
-type ValidateUserCredentials struct {
+type UserLogin struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }

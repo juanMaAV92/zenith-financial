@@ -1,4 +1,4 @@
-package users
+package auth
 
 import (
 	"context"
@@ -10,22 +10,22 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type UserService interface {
-	CreateUser(ctx context.Context, req *request.CreateUser) (*response.User, error)
+type AuthService interface {
+	Login(ctx context.Context, req *request.UserLogin) (*response.UserLogin, error)
 }
 
 type Handler struct {
-	userService UserService
+	authService AuthService
 }
 
-func NewHandler(userService UserService) *Handler {
+func NewHandler(authService AuthService) *Handler {
 	return &Handler{
-		userService: userService,
+		authService: authService,
 	}
 }
 
-func (h *Handler) CreateUser(c echo.Context) error {
-	var req request.CreateUser
+func (h *Handler) Login(c echo.Context) error {
+	var req request.UserLogin
 
 	if err := c.Bind(&req); err != nil {
 		return errors.New(
@@ -35,10 +35,10 @@ func (h *Handler) CreateUser(c echo.Context) error {
 		)
 	}
 
-	result, err := h.userService.CreateUser(c.Request().Context(), &req)
+	result, err := h.authService.Login(c.Request().Context(), &req)
 	if err != nil {
 		return err
 	}
 
-	return c.JSON(http.StatusCreated, result)
+	return c.JSON(http.StatusOK, result)
 }
