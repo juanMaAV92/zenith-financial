@@ -5,11 +5,11 @@ import (
 	"net/http"
 
 	"github.com/juanMaAV92/go-utils/errors"
+	"github.com/juanMaAV92/go-utils/jwt"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/domain/request"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/domain/response"
 	"github.com/juanMaAV92/zenith-financial/backend/internal/entities"
 	"github.com/juanMaAV92/zenith-financial/backend/utils/crypto"
-	"github.com/juanMaAV92/zenith-financial/backend/utils/jwt"
 )
 
 type userRepository interface {

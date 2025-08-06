@@ -4,6 +4,7 @@ import (
 	"github.com/juanMaAV92/go-utils/database"
 	"github.com/juanMaAV92/go-utils/env"
 	"github.com/juanMaAV92/go-utils/errors"
+	"github.com/juanMaAV92/go-utils/jwt"
 	"github.com/juanMaAV92/go-utils/log"
 	"github.com/juanMaAV92/go-utils/platform/server"
 	authHandler "github.com/juanMaAV92/zenith-financial/backend/cmd/handlers/auth"
@@ -47,9 +48,10 @@ func NewServer(cfg *config.Config, logger log.Logger) (*Instance, error) {
 }
 
 func (inst Instance) initServices() (*services, error) {
+	jwt.InitJWTConfig(inst.config.Jwt)
 	healthService := health.NewService()
 
-	db, err := database.New(inst.config.Database, inst.Logger)
+	db, err := database.New(*inst.config.Database, inst.Logger)
 	if err != nil {
 		return nil, err
 	}
