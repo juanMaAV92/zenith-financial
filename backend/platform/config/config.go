@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/juanMaAV92/go-utils/cache"
 	"github.com/juanMaAV92/go-utils/database"
 	"github.com/juanMaAV92/go-utils/env"
 	jwtUtils "github.com/juanMaAV92/go-utils/jwt"
@@ -44,6 +45,11 @@ var localConfig = Config{
 		Issuer:          MicroserviceName,
 		SigningMethod:   jwt.SigningMethodHS256,
 	},
+	Cache: &cache.CacheConfig{
+		Host:       "localhost",
+		Port:       "6379",
+		ServerName: MicroserviceName,
+	},
 }
 
 func deployConfig() Config {
@@ -54,6 +60,7 @@ func deployConfig() Config {
 		},
 		Database: database.GetDBConfig(),
 		Jwt:      jwtUtils.GetJWTConfig(MicroserviceName, jwt.SigningMethodHS256),
+		Cache:    cache.GetCacheConfig(MicroserviceName),
 	}
 }
 
