@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/juanMaAV92/go-utils/cache"
 	"github.com/juanMaAV92/go-utils/database"
 	"github.com/juanMaAV92/go-utils/env"
 	"github.com/juanMaAV92/go-utils/errors"
@@ -56,9 +57,14 @@ func (inst Instance) initServices() (*services, error) {
 		return nil, err
 	}
 
+	cache, err := cache.New(*inst.config.Cache, inst.Logger)
+	if err != nil {
+		return nil, err
+	}
+
 	userRepository := repositories.NewUserRepository(db)
 	userService := users.NewService(userRepository)
-	authService := auth.NewService(userRepository)
+	authService := auth.NewService(userRepository, cache, inst.Logger)
 
 	return &services{
 		healthService: healthService,

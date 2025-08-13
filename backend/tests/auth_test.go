@@ -9,6 +9,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
+	utilCache "github.com/juanMaAV92/go-utils/cache"
 	"github.com/juanMaAV92/go-utils/errors"
 	jwtUtils "github.com/juanMaAV92/go-utils/jwt"
 	"github.com/juanMaAV92/go-utils/testhelpers"
@@ -25,6 +26,15 @@ import (
 
 type MockStore struct {
 	mock.Mock
+}
+
+type MockCache struct {
+	mock.Mock
+}
+
+func (m *MockCache) Set(ctx context.Context, key string, value interface{}, opts ...utilCache.SetOption) error {
+	args := m.Called(ctx, key, value, opts)
+	return args.Error(0)
 }
 
 func (m *MockStore) FindOne(ctx context.Context, destination interface{}, conditions interface{}) (bool, error) {
@@ -82,6 +92,12 @@ func Test_login(t *testing.T) {
 					user.PasswordSalt = "bfd7d9e1a94ac31e"
 					user.PasswordHash = "$2a$12$WjCNyUfAhbxYO.PRBGaGc.CHIx/1OVvqh7JkPf9CWWgppKW1cgxv2"
 				})
+				mockCache := c.Get("mockCache").(*MockCache)
+				mockCache.On("Set",
+					mock.Anything,
+					"user_refresh_token:123e4567-e89b-12d3-a456-426614174000",
+					mock.Anything,
+					mock.AnythingOfType("[]cache.SetOption")).Return(nil)
 			},
 		},
 		{
@@ -112,6 +128,12 @@ func Test_login(t *testing.T) {
 					user.PasswordSalt = "bfd7d9e1a94ac31e"
 					user.PasswordHash = "$2a$12$WjCNyUfAhbxYO.PRBGaGc.CHIx/1OVvqh7JkPf9CWWgppKW1cgxv2"
 				})
+				mockCache := c.Get("mockCache").(*MockCache)
+				mockCache.On("Set",
+					mock.Anything,
+					"user_refresh_token:123e4567-e89b-12d3-a456-426614174000",
+					mock.Anything,
+					mock.AnythingOfType("[]cache.SetOption")).Return(nil)
 			},
 		},
 	}
@@ -131,14 +153,16 @@ func Test_login(t *testing.T) {
 			ctx, recorder := testhelpers.PrepareContextFormTestCase(app.Server.Echo, test)
 
 			mockStore := new(MockStore)
+			MockCache := new(MockCache)
 			ctx.Set("mockStore", mockStore)
+			ctx.Set("mockCache", MockCache)
 
 			if test.MockFunc != nil {
 				test.MockFunc(app.Server.Echo, ctx)
 			}
 
 			userRepository := repositories.NewUserRepository(mockStore)
-			authService := authService.NewService(userRepository)
+			authService := authService.NewService(userRepository, MockCache, app.Logger)
 			handler := auth.NewHandler(authService)
 
 			err := handler.Login(ctx)
