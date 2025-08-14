@@ -10,11 +10,12 @@ import (
 )
 
 const (
-	apiV1Group      = "/v1"
-	healthCheckPath = "/health-check"
-	userPath        = "/users"
-	loginPath       = "/login"
-	registerPath    = "/users/register"
+	apiV1Group       = "/v1"
+	healthCheckPath  = "/health-check"
+	loginPath        = "/auth/login"
+	logoutPath       = "/auth/logout"
+	refreshTokenPath = "/auth/refresh-token"
+	registerPath     = "/users/register"
 )
 
 type HealthHandler interface {
@@ -27,6 +28,8 @@ type UserHandler interface {
 
 type AuthHandler interface {
 	Login(ctx echo.Context) error
+	Logout(ctx echo.Context) error
+	RefreshToken(ctx echo.Context) error
 }
 
 type handlers struct {
@@ -62,6 +65,8 @@ func initializeHandlers(services *services) *handlers {
 func configureV1Routes(v1 *echo.Group, h *handlers) {
 	v1.POST(registerPath, h.user.CreateUser)
 	v1.POST(loginPath, h.auth.Login)
+	v1.POST(logoutPath, h.auth.Logout)
+	v1.POST(refreshTokenPath, h.auth.RefreshToken)
 }
 
 func configMiddleware(inst *Instance) {
