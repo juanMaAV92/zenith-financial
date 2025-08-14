@@ -37,13 +37,18 @@ func (m *MockCache) Set(ctx context.Context, key string, value interface{}, opts
 	return args.Error(0)
 }
 
+func (m *MockCache) Delete(ctx context.Context, key string) error {
+	args := m.Called(ctx, key)
+	return args.Error(0)
+}
+
 func (m *MockStore) FindOne(ctx context.Context, destination interface{}, conditions interface{}) (bool, error) {
 	args := m.Called(ctx, destination, conditions)
 	return args.Get(0).(bool), args.Error(1)
 }
 
 func Test_login(t *testing.T) {
-	path := "/users/login"
+	path := "/auth/login"
 	cases := []testhelpers.HttpTestCase{
 		{
 			TestName: "Bad Request - Invalid JSON",

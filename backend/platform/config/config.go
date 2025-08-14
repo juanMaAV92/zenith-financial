@@ -40,7 +40,7 @@ var localConfig = Config{
 	},
 	Jwt: &jwtUtils.JwtConfig{
 		SecretKey:       "secret",
-		AccessTokenTTL:  15 * time.Minute,
+		AccessTokenTTL:  1 * time.Minute,
 		RefreshTokenTTL: 24 * time.Hour,
 		Issuer:          MicroserviceName,
 		SigningMethod:   jwt.SigningMethodHS256,

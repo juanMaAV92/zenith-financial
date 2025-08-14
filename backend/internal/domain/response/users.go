@@ -17,6 +17,10 @@ type User struct {
 
 type UserLogin struct {
 	*User
+	*TokensResponse
+}
+
+type TokensResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token"`
 }
